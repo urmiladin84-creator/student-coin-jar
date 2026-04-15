@@ -1,16 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import Dashboard from "@/pages/Dashboard";
+import AddExpenseSheet from "@/components/AddExpenseSheet";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+export default function Index() {
+  const [showAdd, setShowAdd] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
+    <>
+      <Dashboard />
+      {/* FAB */}
+      <button
+        onClick={() => setShowAdd(true)}
+        className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg active:scale-95 transition-transform"
+      >
+        <Plus className="h-6 w-6" />
+      </button>
+      <AddExpenseSheet open={showAdd} onClose={() => setShowAdd(false)} />
+    </>
   );
-};
-
-const Index = PlaceholderIndex;
-
-export default Index;
+}
