@@ -110,7 +110,31 @@ export default function Analytics() {
         </Suspense>
       </div>
 
-      {/* Insights */}
+      {/* Monthly Comparison */}
+      <div className="rounded-xl border bg-card p-4">
+        <h2 className="mb-1 text-sm font-semibold text-muted-foreground">📅 This Month vs Last Month</h2>
+        {diffPercent !== null ? (
+          <p className="mb-3 text-sm">
+            {diffPercent > 0 ? (
+              <span className="text-destructive font-medium">↑ {diffPercent}% more</span>
+            ) : diffPercent < 0 ? (
+              <span className="font-medium" style={{ color: "hsl(160, 84%, 39%)" }}>↓ {Math.abs(diffPercent)}% less</span>
+            ) : (
+              <span className="font-medium">Same as last month</span>
+            )}{" "}
+            than last month ({formatRupiah(totalLastMonth)})
+          </p>
+        ) : (
+          <p className="mb-3 text-xs text-muted-foreground">No data from last month to compare</p>
+        )}
+        {comparisonData.length > 0 && (
+          <Suspense fallback={<div className="h-48 flex items-center justify-center text-sm text-muted-foreground">Loading...</div>}>
+            <LazyComparisonChart data={comparisonData} />
+          </Suspense>
+        )}
+      </div>
+
+
       <div className="rounded-xl border bg-card p-4">
         <h2 className="mb-2 text-sm font-semibold text-muted-foreground">💡 Insights</h2>
         <div className="flex flex-col gap-2 text-sm">
