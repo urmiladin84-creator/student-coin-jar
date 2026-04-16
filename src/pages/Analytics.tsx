@@ -5,10 +5,15 @@ import { CATEGORY_ICONS } from "@/types/expense";
 
 const LazyPieChart = lazy(() => import("@/components/SpendingPieChart"));
 const LazyBarChart = lazy(() => import("@/components/DailyBarChart"));
+const LazyComparisonChart = lazy(() => import("@/components/MonthlyComparisonChart"));
 
 export default function Analytics() {
   const { data } = useApp();
-  const currentMonth = new Date().toISOString().slice(0, 7);
+  const now = new Date();
+  const currentMonth = now.toISOString().slice(0, 7);
+  const lastMonth = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
+  const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonthKey = `${lastMonthDate.getFullYear()}-${String(lastMonthDate.getMonth() + 1).padStart(2, "0")}`;
 
   const monthExpenses = useMemo(
     () => data.expenses.filter((e) => e.date.startsWith(currentMonth)),
