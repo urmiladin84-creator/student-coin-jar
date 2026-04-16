@@ -13,7 +13,6 @@ export default function Analytics() {
   const currentMonth = now.toISOString().slice(0, 7);
   const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastMonthKey = `${lastMonthDate.getFullYear()}-${String(lastMonthDate.getMonth() + 1).padStart(2, "0")}`;
-  const lastMonthKey = `${lastMonthDate.getFullYear()}-${String(lastMonthDate.getMonth() + 1).padStart(2, "0")}`;
 
   const monthExpenses = useMemo(
     () => data.expenses.filter((e) => e.date.startsWith(currentMonth)),
