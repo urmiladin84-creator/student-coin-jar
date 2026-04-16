@@ -20,6 +20,26 @@ export default function Analytics() {
     [data.expenses, currentMonth]
   );
 
+  const lastMonthExpenses = useMemo(
+    () => data.expenses.filter((e) => e.date.startsWith(lastMonthKey)),
+    [data.expenses, lastMonthKey]
+  );
+
+  const comparisonData = useMemo(() => {
+    const thisMap: Record<string, number> = {};
+    const lastMap: Record<string, number> = {};
+    monthExpenses.forEach((e) => { thisMap[e.category] = (thisMap[e.category] || 0) + e.amount; });
+    lastMonthExpenses.forEach((e) => { lastMap[e.category] = (lastMap[e.category] || 0) + e.amount; });
+    const allCats = new Set([...Object.keys(thisMap), ...Object.keys(lastMap)]);
+    return Array.from(allCats)
+      .map((category) => ({ category, thisMonth: thisMap[category] || 0, lastMonth: lastMap[category] || 0 }))
+      .sort((a, b) => (b.thisMonth + b.lastMonth) - (a.thisMonth + a.lastMonth));
+  }, [monthExpenses, lastMonthExpenses]);
+
+  const totalThisMonth = useMemo(() => monthExpenses.reduce((s, e) => s + e.amount, 0), [monthExpenses]);
+  const totalLastMonth = useMemo(() => lastMonthExpenses.reduce((s, e) => s + e.amount, 0), [lastMonthExpenses]);
+  const diffPercent = totalLastMonth > 0 ? Math.round(((totalThisMonth - totalLastMonth) / totalLastMonth) * 100) : null;
+
   const categoryData = useMemo(() => {
     const map: Record<string, number> = {};
     monthExpenses.forEach((e) => {
